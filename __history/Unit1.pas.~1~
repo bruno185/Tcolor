@@ -1,0 +1,57 @@
+unit Unit1;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls;
+
+type
+  TForm1 = class(TForm)
+    Panel1: TPanel;
+    Button1: TButton;
+    Memo1: TMemo;
+    procedure Button1Click(Sender: TObject);
+  private
+    { Déclarations privées }
+  public
+    { Déclarations publiques }
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.Button1Click(Sender: TObject);
+var
+  col : TColor;
+  r,v,b : byte;
+begin
+  col := Panel1.Color;
+  asm
+    // bleu
+    mov eax,col
+    and eax, $00FF0000
+    shr eax,16
+    mov b,al
+    // vert
+    mov eax,col
+    and eax, $0000FF00
+    shr eax,8
+    mov v,al
+    // rouge
+    mov eax,col
+    and eax, $000000FF
+    mov r,al
+  end;
+
+  memo1.Clear;
+  memo1.Lines.Add('Rouge : ' +IntToStr(r))  ;
+  memo1.Lines.Add('Vert : ' +IntToStr(v))  ;
+  memo1.Lines.Add('Bleu : ' +IntToStr(b))  ;
+end;
+
+end.
